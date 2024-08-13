@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { ConvexClientProvider } from "./providers/ConvexProvider";
+import ConvexClerkProvider from "./providers/ConvexClerkProvider";
 
 const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClerkProvider>{children}</ConvexClerkProvider>
       </body>
     </html>
   );
