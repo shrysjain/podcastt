@@ -138,10 +138,38 @@ html {
 .cl-internal-4a7e9l {
   color: white;
 }
-
 .cl-userButtonPopoverActionButtonIcon {
   color: white;
 }
 .cl-internal-wkkub3 {
   color: #f97535;
+}
+.cl-socialButtonsProviderIcon__apple {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+.cl-formFieldAction__identifier {
+  color: #c5d0e6;
+}
+.cl-phoneInputBox {
+  border: 1px solid #363940;
+}
+.cl-phoneInputBox:hover {
+  border: 1px solid #f97535;
+}
+.cl-selectButtonIcon__countryCode {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+.cl-selectOption__countryCode {
+  color: white;
+}
+.cl-formFieldInput:hover {
+  border: 1px solid #f97535;
+}
+.cl-input__phoneNumber:hover {
+  border: none !important;
+}
+.cl-input__identifier:hover {
+  border: none !important;
 }
