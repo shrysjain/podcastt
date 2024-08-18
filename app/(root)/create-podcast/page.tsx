@@ -90,7 +90,7 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="input-class focus-visible ring-orange-1"
+                      className="input-class focus-visible ring-offset-orange-1"
                       placeholder="The Joe Rogan Experience...."
                       {...field}
                     />
@@ -106,7 +106,7 @@ const CreatePodcast = () => {
               <Select onValueChange={(value) => setVoiceType(value)}>
                 <SelectTrigger
                   className={cn(
-                    "capitalize text-16 w-full border-none bg-black-1 text-gray-1"
+                    "capitalize text-16 w-full border-none bg-black-1 text-gray-1 focus:ring-offset-orange-1"
                   )}
                 >
                   <SelectValue
@@ -114,7 +114,7 @@ const CreatePodcast = () => {
                     className="placeholder:text-gray-1"
                   />
                 </SelectTrigger>
-                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-1">
+                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-offset-orange-1">
                   {voiceCategories.map((category) => (
                     <SelectItem
                       key={category}
@@ -144,7 +144,7 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      className="input-class focus-visible ring-orange-1"
+                      className="input-class focus-visible ring-offset-orange-1"
                       placeholder="A podcast hosted by American comedian, presenter, and UFC color commentator Joe Rogan...."
                       {...field}
                     />
@@ -168,7 +168,7 @@ const CreatePodcast = () => {
             <div className="mt-10 w-full">
               <Button
                 type="submit"
-                className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-250 hover:bg-black-1"
+                className="cursor-pointer text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-250 hover:bg-black-1"
               >
                 {isSubmitting ? (
                   <>
