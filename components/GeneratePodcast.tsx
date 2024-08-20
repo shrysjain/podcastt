@@ -8,6 +8,8 @@ import { api } from "@/convex/_generated/api";
 import { useAction, useMutation } from "convex/react";
 import { v4 as uuidv4 } from "uuid";
 import { useUploadFiles } from "@xixixao/uploadstuff/react";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 
 const useGeneratePodcast = ({
   setAudio,
@@ -15,6 +17,8 @@ const useGeneratePodcast = ({
   voicePrompt,
   setAudioStorageId,
 }: GeneratePodcastProps) => {
+  const { toast } = useToast();
+
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -24,12 +28,25 @@ const useGeneratePodcast = ({
 
   const getAudioUrl = useMutation(api.podcasts.getUrl);
 
+  const showError = async (e: string) => {
+    toast({
+      title: "Error",
+      description: e,
+      variant: "destructive",
+    });
+  };
+
   const generatePodcast = async () => {
     setIsGenerating(true);
     setAudio("");
 
     if (!voicePrompt) {
-      // toast error
+      toast({
+        title: "Transcript missing",
+        description:
+          "Please provide a full podcast transcript to generate an AI voiceover",
+        variant: "destructive",
+      });
       return setIsGenerating(false);
     }
 
@@ -49,8 +66,27 @@ const useGeneratePodcast = ({
       setAudioStorageId(storageId);
 
       const audioUrl = await getAudioUrl({ storageId });
+      setAudio(audioUrl!);
+      setIsGenerating(false);
+
+      toast({
+        title: "Success ❤️",
+        description: "AI podcast voiceover generated successfully",
+      });
     } catch (e) {
-      // toast error
+      toast({
+        title: "Error",
+        description: `Failed to create AI voiceover. Please try again later.`,
+        action: (
+          <ToastAction
+            altText="View error"
+            onClick={() => showError(e as string)}
+          >
+            View error
+          </ToastAction>
+        ),
+        variant: "destructive",
+      });
       console.log(`Error generating podcast: ${e}`);
       setIsGenerating(false);
     }
@@ -80,6 +116,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
         <Button
           type="submit"
           className="cursor-pointer text-16 w-full bg-orange-1 py-4 font-bold text-white-1"
+          onClick={generatePodcast}
         >
           {isGenerating ? (
             <>
