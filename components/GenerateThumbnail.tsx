@@ -9,8 +9,9 @@ import { Input } from "./ui/input";
 import Image from "next/image";
 import { useToast } from "./ui/use-toast";
 import { useUploadFiles } from "@xixixao/uploadstuff/react";
-import { useMutation } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { v4 as uuidv4 } from "uuid";
 
 const GenerateThumbnail = ({
   setImage,
@@ -26,13 +27,14 @@ const GenerateThumbnail = ({
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const { startUpload } = useUploadFiles(generateUploadUrl);
   const getImageUrl = useMutation(api.podcasts.getUrl);
+  const handleGenerateThumbnail = useAction(api.openai.generateThumbnailAction);
 
   const handleImage = async (blob: Blob, filename: string) => {
     setIsImageLoading(true);
     setImage("");
 
     try {
-      const file = new File([blob], filename, { type: "image/*" }); // is this type correct?
+      const file = new File([blob], filename, { type: "image/*" });
 
       const uploaded = await startUpload([file]);
       const storageId = (uploaded[0].response as any).storageId;
@@ -57,7 +59,20 @@ const GenerateThumbnail = ({
     }
   };
 
-  const generateImage = async () => {};
+  const generateImage = async () => {
+    try {
+      const response = await handleGenerateThumbnail({ prompt: imagePrompt });
+      const blob = new Blob([response], { type: "image/png" });
+      handleImage(blob, `ai-${uuidv4()}.png"`);
+    } catch (e) {
+      console.log(`Error generating image: ${e}`);
+      toast({
+        title: "Error",
+        description: "Error generating image",
+        variant: "destructive",
+      });
+    }
+  };
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

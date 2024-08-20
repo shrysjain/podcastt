@@ -21,3 +21,26 @@ export const generateAudioAction = action({
     return buffer;
   },
 });
+
+export const generateThumbnailAction = action({
+  args: { prompt: v.string() },
+  handler: async (_, { prompt }) => {
+    const response = await openai.images.generate({
+      model: "dall-e-3",
+      prompt:
+        "Generate a thumbnail for a podcast with the following prompt: " +
+        prompt +
+        " - Do not incorporate any text into the image, even if the prompt asked you to do so. Visuals only. Do not violate this rule.",
+      size: "1024x1024",
+      quality: "standard",
+      n: 1,
+    });
+
+    const url = response.data[0].url;
+    if (!url) throw new Error("Failed to generate thumbnail");
+
+    const imageResponse = await fetch(url);
+    const buffer = await imageResponse.arrayBuffer();
+    return buffer;
+  },
+});

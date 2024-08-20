@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +29,9 @@ import GeneratePodcast from "@/components/GeneratePodcast";
 import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Loader } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
@@ -44,7 +47,7 @@ const CreatePodcast = () => {
   );
   const [imageUrl, setImageUrl] = useState("");
 
-  const [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(
+  let [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(
     null
   );
   const [audioUrl, setAudioUrl] = useState("");
@@ -55,6 +58,10 @@ const CreatePodcast = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const createPodcast = useMutation(api.podcasts.createPodcast);
+
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,8 +70,45 @@ const CreatePodcast = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+
+      if (!imageUrl || !voiceType) {
+        toast({
+          title: "Error",
+          description:
+            "Please generate/upload image and audio for this podcast",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        throw new Error("Missing image or audio for podcast.");
+      }
+
+      if (!audioStorageId) audioStorageId = "" as Id<"_storage">;
+
+      await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        voiceType,
+        imagePrompt,
+        voicePrompt,
+        views: 0,
+        audioDuration,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+      });
+    } catch (error) {
+      console.log(`Error submitting: ${error}`);
+      toast({
+        title: "Error",
+        description: "An error occurred while creating your podcast",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
   }
 
   return (
