@@ -32,6 +32,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
@@ -41,6 +42,8 @@ const formSchema = z.object({
 });
 
 const CreatePodcast = () => {
+  const router = useRouter();
+
   const [imagePrompt, setImagePrompt] = useState("");
   const [imageStorageId, setImageStorageId] = useState<Id<"_storage"> | null>(
     null
@@ -50,7 +53,7 @@ const CreatePodcast = () => {
   let [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(
     null
   );
-  const [audioUrl, setAudioUrl] = useState("");
+  let [audioUrl, setAudioUrl] = useState("");
   const [audioDuration, setAudioDuration] = useState(0);
 
   const [voiceType, setVoiceType] = useState<string | null>(null);
@@ -85,9 +88,11 @@ const CreatePodcast = () => {
         throw new Error("Missing image or audio for podcast.");
       }
 
-      if (!audioStorageId) audioStorageId = "" as Id<"_storage">;
+      if (!audioStorageId)
+        audioStorageId = "kg26rsfbhabc3c0wvxcvhhd8bd6z80p1" as Id<"_storage">;
+      if (!audioUrl) audioUrl = "" as string;
 
-      await createPodcast({
+      const podcast = await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
         audioUrl,
@@ -100,6 +105,14 @@ const CreatePodcast = () => {
         audioStorageId: audioStorageId!,
         imageStorageId: imageStorageId!,
       });
+
+      toast({
+        title: "Success",
+        description: "Podcast created successfully",
+      });
+
+      setIsSubmitting(false);
+      router.push("/");
     } catch (error) {
       console.log(`Error submitting: ${error}`);
       toast({
