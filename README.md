@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Podcastt 🎧
 
-## Getting Started
+Podcastt is a dynamic and modern platform that enables seamless podcast creation, discovery, and listening experiences. Leveraging advanced AI technologies and a sleek, responsive design, Podcastt caters to both creators and listeners, making podcasting more accessible and engaging than ever.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Robust Authentication: Secure and reliable user login and registration using Clerk.
+- Modern Home Page: Showcases trending podcasts with a sticky podcast player for continuous listening.
+- Discover Podcasts Page: Explore new and popular podcasts with ease.
+- Fully Functional Search: Find podcasts using various search criteria.
+- Create Podcast Page: Create podcasts with text-to-audio conversion, AI image generation, and preview functionalities.
+- Multi Voice AI Functionality: Supports multiple AI-generated voices for diverse and dynamic podcast creation.
+- Profile Page: View all created podcasts with options to delete them.
+- Podcast Details Page: Displays detailed information about each podcast, including creator details, listener count, and transcript.
+- Podcast Player: Includes backward/forward controls and mute/unmute functionality for a seamless listening experience.
+- Responsive Design: Fully functional and visually appealing across all devices and screen sizes.
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Convex
+- OpenAI
+- Clerk
+- ShadCN
+- Tailwind CSS
+
+# Try it Out!
+
+You can explore Podcastt live at [podcastt.vercel.app](https://podcastt.vercel.app). Enjoy your podcasting journey!
+
+To run a development instance locally, clone this repository, install dependencies with npm, and set up a .env.local file with the following keys:
+
+```env
+# Convex
+CONVEX_DEPLOYMENT=
+NEXT_PUBLIC_CONVEX_URL=
+
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL='/sign-in'
+NEXT_PUBLIC_CLERK_SIGN_UP_URL='/sign-up'
+
+# OpenAI
+OPENAI_API_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Also set up a Convex project with the following environmental variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+CLERK_SECRET_KEY=
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+OPENAI_API_KEY=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Finally, run the following commands in parallel terminals:
 
-## Learn More
+```sh
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npx convex dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+We welcome contributions to enhance Podcastt. To contribute, please fork the repository and submit a pull request with your changes.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
