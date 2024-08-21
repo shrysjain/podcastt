@@ -25,7 +25,7 @@ Podcastt is a dynamic and modern platform that enables seamless podcast creation
 - ShadCN
 - Tailwind CSS
 
-# Try it Out!
+## Try it Out!
 
 You can explore Podcastt live at [podcastt.vercel.app](https://podcastt.vercel.app). Enjoy your podcasting journey!
 
